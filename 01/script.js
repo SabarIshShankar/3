@@ -55,6 +55,54 @@ let planetProto = {
           intensity = pow( c - dot(vNormal, vNormel), p );
           gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
         }`
-		})
-	}
+				,
+				fragmentShader: `unifrom vec3 glowColor;
+				varying float intensity;
+				void main()
+				{
+					vec3 glow = glowColor*intensity;
+					gl_FragColor = vect4(glow, 1.0);
+					}`,
+					side: THREE.BackSide,
+					blending: THREE.AdditiveBlending,
+					transparent: true
+		});
+		return glowMaterial;
+	},
+	texture: function(material, property, uri){
+		let textureLoader = new THREE.TextureLoader();
+		textureLoader.crossOrigin = true;
+		textureLoader.load(
+			uri, function(texture){
+				material[property] = texture;
+				material.needsUpdate = true;
+			}
+		);	}
+};
+
+let createPlanet = function(options){
+	let surfaceGeometry = planetProto.sphere(options.surface.size);
+	let surfaceMaterial = planetProto.material(options.surface.material);
+	let surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
+
+	let atmosphereGeometry = planetProto.sphere(options.surface.size + options.atmosphere.size);let atmosphereMaterialDefaults = {
+		side: THREE.DoubleSide,
+		transparent: true
+	}	
+	let atmosphereMaterialOptions = Object.assign(atmosphereMaterialDefaults, options.atmosphere.material);
+	let atmosphereMaterial=planetProto.material(atmosphereMaterialOptions);
+	let atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+
+	let atmosphericGlowGeometry = planetProto.sphere(options.surface.size + options.atmosphere.glow.size);
+	let atmosphericGlowMaterial = planetProto.glowMaterial(options.atmosphere.glow.intensity, options.atmosphere.glow.fade, options.atmosphere.glow.color);
+	let atmosphericGlow = new THREE.Mesh(atmosphericGlowGeometry, atmosphericGlowMaterial);
+
+	let planet = new THREE.Object3D();
+	surface.name = 'surface';
+	atmosphere.name = 'atmosphere';
+	atmosphericGlow.name = 'atmosphericGlow';
+
+	planet.add(surface);
+	planet.add(atmosphere);
+	planet.add(atmosphericGlow);
 }
