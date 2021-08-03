@@ -105,4 +105,68 @@ let createPlanet = function(options){
 	planet.add(surface);
 	planet.add(atmosphere);
 	planet.add(atmosphericGlow);
+
+	for (let textureProperty in options.surface.textures){
+		planetProto.texture(
+			surfaceMaterial,
+			textureProperty,
+
+			options.surface.textures[textureProperty]
+		);
+	}
+	for (let textureProperty in options.atmosphere.textures){
+		planetProto.texture(
+			atmosphereMaterial,
+			textureProperty,
+	options.atmosphere.textures[textureProperty]
+		);
+	}
+	return planet;
+};
+
+let earth = createPlanet({
+	surface: {
+		size: 0.5,
+		material: {
+			bumpScale: 0.05,
+			specular: new THREE.Color('grey'),
+			shininess: 10
+		},
+		textures: {
+			map:'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthcloudmap.jpg',
+			alphaMap: 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/earthcloudmaptrans.jpg'
+		},
+		glow: {
+			size: 0.02,
+			intensity: 0.07,
+			fade: 7,
+			color: 0x93cfef
+		}
+	},
+});
+
+let markerProto = {
+	latLongToVector3: function latLongToVector3(latitude, longitude, radius, height){
+		var phi = (latitude)*Math.PI/180;
+		var theta = (longitude-180)*Math.PI/180;
+		var x = -(radius+height)*Math.cos(phi)*Math.cos(theta);
+		var y = (radius+height) * Math.sin(phi);
+		var z= (radius+height)*Math.sin(phi) * Math.sin(theta);
+		return new THREE.Vector3(x, y, z);
+	},
+	marker: function marker(size, color, vector2Position){
+		let markerGeometry = new THREE.SphereGeometry(size);
+		let markerMaterial = new THREE.MeshLambertMaterial({
+			color: color
+		});
+		let markerMesh = new THREE.Mesh(markerGeometry, markerMaterial);
+		markerMesh.position.copy(vector3Position);
+	return markerMesh;
+	}
+}
+
+let placeMarker = function(object, options){
+	let position = markerProto.latLongToVector3(options.latitude, options.longitude, options.radius, options.height);
+	let marker = markerProto.marker(options.size, options.color, position);
+	object.add(marker);
 }
