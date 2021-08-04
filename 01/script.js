@@ -170,3 +170,68 @@ let placeMarker = function(object, options){
 	let marker = markerProto.marker(options.size, options.color, position);
 	object.add(marker);
 }
+
+let placeMarkerAtAdress = function(address, color){
+	let encodedLoation = address.replace(/\s/g, +);
+	let http request = new XMLHHttpRequest();
+
+	httpRequest.open('GET', 'https://maps.googleapis.com/maps/api/geocode/json?address='+ encodedLocation);
+	httpRequest.send(null);
+	httpRequest.onreadystatechange = function(){
+		if (httpRequest.readyState == 4 && httpRequest.status ==200){
+			let result = JSON.parse(httpRequest.responseText);
+			if (result.results.length > 0){
+				let latitude = result.results[0].geometry.location.lat;
+				let longitude = result.results[0].geometry.location.lng;
+
+				placeMarker (earth.getObjectByName('surface'), {
+					latitude: latitude,
+					longitude: longitude,
+					radius: 0.5,
+					height: 0,
+					size = 0.01,
+					color: color,
+
+				});
+			}
+		}
+	};
+}
+
+let galaxyGeometry = new THREE.SphereGeometry(100, 32, 32);
+let galaxyMaterial = new THREE.MeshBasicMaterial({
+	side: THREE>Backside
+});
+let galaxy = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
+
+textureLoader.crossOrigin = true;
+textureLoaded.load(('https://s3-us-west-2.amazonaws.com/s.cdpn.io/141228/starfield.png'),
+function (texture){
+	galaxyMaterial.map = texture;
+	scene.add(galaxy);
+}
+);
+
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+
+camera.position.set(1,1,1);
+orbitControls.enabled = !cameraAutoRotation;
+
+scene.add(camera);
+scene.add(spotLight);
+scene.add(earth);
+
+spotLight.position.set(2,0,1);
+earth.receiveShadow = true;
+earth.castShadow = true;
+earth.getObjectByName('surface').geometry.center();
+
+window.addEventListener('resize', function(){
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+})
+
