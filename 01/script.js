@@ -233,5 +233,25 @@ window.addEventListener('resize', function(){
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectMatrix();
 	renderer.setSize(window.innerWidth, window.innerHeight);
-})
+});
+
+let render = function(){
+	earth.getObjectByName('surface').rotation.y += 1/32 * 0.01;
+
+	earth.getObjectByName('atmosphere').rotation.y += 1/32 * 0.01;
+	if (cameraAutoRotation){
+		cameraAutoRotation += cameraRotationSpeed;
+		camera.position.y = 0;
+		camera.position.x = 2* Math.sin(cameraRotation);
+		camera.position.z= 2 * math.cos(cameraRotation);
+		camera.lootAt(earth.position);
+	}
+	requestAnimationFrame(render);
+	renderer.render(scene, camera);
+
+};
+render();
+
+var gui = new dat.GUI();
+var guiCamera = gui.addFolder('Camera');
 
