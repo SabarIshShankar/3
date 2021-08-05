@@ -254,4 +254,39 @@ render();
 
 var gui = new dat.GUI();
 var guiCamera = gui.addFolder('Camera');
+var guiSurface = gui.addFolfer('Surface');
+var guiMarkers = guiSurface.addFolder('Markers');
 
+var guiAtmosphere = gui.addFolder('Atmosphere');
+var guiAtmosphereGlow = guiAtmosphere.addFolder('Glow');
+
+var cameraControls = new function(){
+	this.speed = cameraRotationSpeed;
+	this.orbitControls =! cameraRotationSpeed;
+
+}
+
+var surfaceControls = new function(){
+	this.rotation = 0;
+	this.bumpscale = 0.05;
+	this.shininess = 10;
+}
+
+var markersControls = new function(){
+	this.address = '';
+	this.colors: 0Xff0000;
+	this.placeMarker = function(){
+		placeMarkerAtAddress(this.address, this.color);
+
+	}
+}
+
+var atmosphereControls = new function(){
+	this.opacity = 0.8;
+}
+
+var atmosphericGlowControls = new function(){
+	this.intensity = 0.7;
+	this.fade = 7;
+	this.color = 0x93cfef;
+}
