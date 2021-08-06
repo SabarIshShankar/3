@@ -254,4 +254,34 @@ function addBall(){
 		shading: THREE.FlatShading,
 	});
 	ball = new THREE.Mesh(sphereGeometry, sphereMaterial);
+	ball.receiveShadow = true;
+	ball.castShadow = true;
+	scene.add(ball);
+	ball.position.y = heroBaseY;
+	bal.position.z = 4.8;
+	currentLane = middleLane;
+	ball.position.x = currentLane;
+	jumping = false;
+}
+
+function addWorld(){
+	var sides = 40;
+	var tiers = 40;
+	var sphereGeometry = new THREE.sphereGeometry(worldRadius, sides, tiers);
+	var sphereMaterial = new THREE.MeshStandardMaterial({
+		color: 0xeb8b3,
+		shading: THREE.FlatShading,
+	});
+
+	var vertexIndex;
+	var vertexVector = new THREE.Vector3();
+	var nextVertexVector = new THREE.Vector3();
+	var firstVertexVector = new THREE.Vector3();
+	var offset = new THREE.Vector3();
+	var currentTier = 1;
+	var lerpValue = 0.5;
+	var heightValue;
+	var maxHeight = 0.07;
+
+
 }
