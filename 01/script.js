@@ -218,7 +218,7 @@ document.body.appendChild(renderer.domElement);
 
 
 camera.position.set(1,1,1);
-orbitControls.enabled = !cameraAutoRotation;
+orbitControls.enabled =!cameraAutoRotation;
 
 scene.add(camera);
 scene.add(spotLight);
@@ -258,11 +258,11 @@ var guiSurface = gui.addFolfer('Surface');
 var guiMarkers = guiSurface.addFolder('Markers');
 
 var guiAtmosphere = gui.addFolder('Atmosphere');
-var guiAtmosphereGlow = guiAtmosphere.addFolder('Glow');
+var guiAtmosphericGlow = guiAtmosphere.addFolder('Glow');
 
 var cameraControls = new function(){
 	this.speed = cameraRotationSpeed;
-	this.orbitControls =! cameraRotationSpeed;
+	this.orbitControls =!cameraRotationSpeed;
 
 }
 
@@ -290,3 +290,40 @@ var atmosphericGlowControls = new function(){
 	this.fade = 7;
 	this.color = 0x93cfef;
 }
+
+guiCamera.add(cameraControls, 'speed',0,0.1).step(0.001).onChange(function(value){
+	cameraRotationSpeed = value;
+});
+guiCamera.add(cameraControls, 'orbitControls').onChange(function(value){
+	cameraAutoRotation =!value;
+	orbitControls.enabled = value;
+});
+
+guiSurface.add(surfaceControls. 'rotation', 0, 6).onChange(function(value){
+	earth.getObjectByName('surface').rotation.y=value;
+});
+guiSurface.add(surfaceControls, 'bumpScale', 0, 1).step(0.01).onChange(function(value){
+	earth.getObjectByName('surface').material.bumpscale = value;
+});
+guiSurface.add(surfaceControls,'shininess', 0, 30).onChange(function(value){
+	earth.getObjectByName('surface').material.shininess = value;
+});
+
+guiMarkers.add(markersControls, 'address');
+guiMarkers.addColor(markersControls, 'color');
+guiMarkers.add(markersControls,'placemaker');
+guiAtmosphere.add(atmosphereControls, 'opacity', 0, 1).onChange(function(value){
+	earth.getObjectByName('atmosphere').material.opacity = value;
+});
+
+guiAtmosphericGlow.add(atmosphericGlowControls, 'intensity', 0, 1).onChange(function(value){
+	earth.getObjectByName('atmosphericGlow').material.uniforms['c'].value = value;
+});
+
+guiAtmosphericGlow.add(atmosphericGlowControls, 'fade', 0, 50).onChange(function(value){
+	earth.getObjectByName('atmosphericGlow').material.uniforms['p'].value = value;
+});
+guiAtmosphericGlow.addColor(atmosphericGlowControls, 'color').onChange(function(value){
+	earth.getObjectByName('atmosphericGlow').material.uniforms.glowColor.value.setHex(value);
+});
+
