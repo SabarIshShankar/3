@@ -78,4 +78,54 @@ function createScene(){
   addBall();addLight();
   createExplosionParticles();
   
+	window.addEventListener("resize", onWIndowResize, false);
+	document.onkeydown = handleKeyDown;
+
+	titleText = document.createElement("div");
+	titleText.style.position = "absolute";
+	titleText.style.textalign = "center";
+	titleText.innerHTML = "ball";
+	titleText,style.top = 10+"px";
+	titleText.style.color = "#ffffff";
+	if(window.innerWidth<600){
+		titleText.style.fontSize = 24+ "px";
+		titleText.style.left = window.innerWidth / 2 -142.5 +"px";
+	}else{
+		titleText.style.fontSize = 32 + "px";
+	  titleText.style.left = window.innerWidth / 2 -190 + "px";
+	}
+	document.body.appendChild(titleText);
+
+	pausedText = document.createElement("div");
+	pausedText.style.position = "absolute";
+	pausedText.style.fontWeight = "bold";
+	pausedText.style.color = "#000";
+	if(window.innerWidth < 600){
+		pauseText.style.fontSize = 12+"px";
+		pausedText.style.top = 45+"px";
+		pausedText.style.left = 15+"px"
+	} else {
+		pausedText.style.fontSize = 24+ "px";
+		pausedText.style.top = 50 + "px";
+		pausedText.style.left = 30 + "px";
+
+	}document.body.appendChild(pausedText);
+
+	scoreText = document.createElement("div");
+	scoreText.style.position = "absolute";
+	scoreText.stye.fontWeight = "bold";
+	scoreText.style.color = "#000";
+	scoreText.innerHTML = "Score: 0";
+	if(window.innerWidth < 600){
+		scoreText.style.fontSize = 12 + "px";
+		scoreText.style.top = 65 +"px";
+		scoreText.style.left = 15 +"px";
+	} else{
+		scoreText.style.fontSize = 24 + "px";
+		scoreText.style.top = 80 +"px";
+		scoreText.style.left = 30 +"px";
+	}
+	document.body.appendChild(scoreText);
+
+
 }
