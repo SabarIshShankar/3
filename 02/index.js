@@ -29,7 +29,7 @@ var treesPool;
 var explodeParticleGeometry;
 var particleCount =20;
 var explosionPower = 1.06;
-var exploreParticles;
+var explodeParticles;
 var titleText;
 var scoreText;
 var pausedText;
@@ -127,5 +127,86 @@ function createScene(){
 	}
 	document.body.appendChild(scoreText);
 
+	highText = document.createElement("div");
+	highText.style.position = "absolute";
+	highText.style.fontWeight = "bold";
+	highText.style.color = "#000";
+	highText.innerHTML = `High score: ${highScore}`;
+	if(window.innerWidth < 600){
+		highText.style.fontSize = 12 + "px";
+		highText.style.top = 85 + "px";
+		highText.style.left = 15+"px";
+	} else {
+			highText.style.fontSize = 24 + "px";
+		highText.style.top = 110 + "px";
+		highText.style.left = 30+"px";
+	}
+	document.body.appendChild(hightText);
 
 }
+
+
+function createExplosionParticles(){
+	explodeParticleGeometry = new THREE.Geometry();
+	for (var i = 0; i< particleCOunt; i++){
+		var vertex = new THREE.Vector3();
+		explodeParticleGeomtry.vertices.push(vertex);
+	} 
+	var pMaterial = new THREE.PointsMaterial({
+		color: 0x187018,
+		transparent: true,
+		opacity: 1,
+		size: 0.2,
+	});
+	explodeParticles = new THREE.Points(explodeParticleGeometry, pMaterial);
+	scene.add(explodeParticles);
+	explodeParticles.visible = false;
+}
+
+
+function createTressPool(){
+	var maxTreesInPool = 10;
+	var newTree;
+	for( var i = 0; i< maxTreesInPool; i++){
+		newTree = createTree();
+		treesPool.push(newTree);
+	}
+}
+
+function handleKeyDown(keyEvent){
+	var validMove = true;
+	if ((keyEvent.keyCode === 37 || keyEvent.keyCode === 65) && !paused){
+		if(currentLane == middleLane){
+			currentLane = leftLane;
+		} else if (currentLane == rightLane){
+			currentLane = middleLane;
+
+		} else {
+			validMove = false;
+
+		}
+	} else if((keyEvent.keyCode === 39 || keyEvent.keyCode === 68) && !paused){
+		if (currentLane == middleLane){
+			currentLane = rightLane;
+		} else if (currentLane == leftLane ){
+			currentLane = middleLane;
+		} else {
+			validMove = false;
+		}
+	} else if (keyEvent.keyCode === 80 || keyEvent.keyCode === 81){
+		if(pause){
+			pausedText.innerHTML = "";
+			paused = false;
+		} else {
+			pausedText.innerHTML = "Paused";
+			paused = true;
+		}
+	} else {
+		if((keyEvent.keyCode === 38 || keyEvent.keyCode === 87 || keyEvent.keyCode === 32) && !jumping && !paused){
+			bounceValue = 0.11;
+			jumping = true;
+		}
+		validMove = false;
+	}
+}
+//handleSwipe
