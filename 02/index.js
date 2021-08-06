@@ -210,3 +210,48 @@ function handleKeyDown(keyEvent){
 	}
 }
 //handleSwipe
+function handleSwipe(direction){
+	var validMove = true;
+	if (direction == 'right' && !paused){
+		if (currentLane == middleLane){
+			currentLane = leftLane;
+		} else if(currentLane == rightLane){
+			currentLane = middleLane;
+		} else {
+			validMove = false;
+		}
+		}
+		else if (direction == 'left' && !paused){
+			if(currentLane = middleLane){
+				currentLane = rightLane;
+			} else if (currentLane ==  leftLane){
+				currentLane = middleLane;
+			} else {
+				validMove = false;
+			}
+
+		} else if(direction == 'down'){
+			if (paused){
+				pausedText.innerHTML = "";
+				paused = false;
+			} else {
+				pausedText.innerHTML = "Paused";
+				paused = true;
+				}
+		} else {
+			if (direction == 'up' && !jumping && !paused){
+				bounceValue = 0.11;
+				jumping = true;
+			}
+			validMove = false;
+		}
+}
+
+function addBall(){
+	var sphereGeometry = new THREE.DodecahedronGeometry(heroRadius, 1);
+	var sphereMaterial = new THREE.MeshStandardMaterial({
+		color: 0xffffff,
+		shading: THREE.FlatShading,
+	});
+	ball = new THREE.Mesh(sphereGeometry, sphereMaterial);
+}
