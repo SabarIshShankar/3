@@ -13,7 +13,7 @@ var createScene = function (canvas, engine){
 		scene.createDefaultCameraOrLight(true, true, true);
 	}); return scene;
 };
-function move (event){
+function move(event){
 }
 const scene = createScene();
 
