@@ -1,3 +1,4 @@
+//https://rollingforests.rayhanadev.repl.co/
 var camera;
 var scene;
 var renderer;
@@ -313,3 +314,66 @@ function addWorld(){
 	rollingGroundSphere.position.z = 2;
 	addWorldTress();
 }
+
+function addLight(){
+	var hemisphereLight = new THREE.HemisphereLight(0xfffafa, 0x000000, 0.9);
+	scene.add(hemisphereLight);
+	sun = new THREE.DirectionalLight(0xcdc1c5, 0.9);
+	sun.position.set(12, 6, -7);
+	sun.castShadow = true;
+	scene.add(sun);
+	sun.shadow.mapSize.width: 256;
+	sun.shadow.mapSize.height = 256;
+	sun.shadow.camera.near = 0.5;
+	sun.shadow.camera.far = 50;
+}
+function addPathTree(){
+	var options = [0, 1, 2];
+	var lane = Math.floor(Math.random() * 3);
+	addTree(true, lane);
+	options.splice(lane, 1);
+	if(Math.random() > 0.5){
+		lane = Math.floor(Math.random()*2);
+		addTree(true, options[lane]);
+	}
+}
+function addWorldTress(){
+	var numTrees = 36;
+	var gap = 6.28 / 36;
+	for(var i = 0; i<numTrees; i++){
+		addTree(false, i * gap, true);
+		addTree(false, i * gap, false);
+	}
+}
+
+function addTree(inPath, row, isLeft){
+	var newTree;
+	if(inPath){
+		if(treesPool.length == 0) return;
+		newTree = treesPool.pop();
+		newTree.visible = True;
+		treesInPath.push(newTree);
+		sphericalHelper.set(
+			worldRadius - 0.3,
+			pathAngleValues[row],
+			-rollingGroundSphere.rotation.x + 4
+		);
+	} else {
+		newTree = createTree();
+		var forestAreaAngle = 0;
+		if (isLeft){
+			foresAreaAngle = 1.68 + Math.random() * 0.1;
+		} else {
+			forestAreaAngle = 1.46 - Math.random() * 0.1;
+
+		}
+		sphericalHelper.set(worldRadius - 0.3, forestAreaAngle, row);
+	}
+	newTree.position.setFromSpherical(sphericalHelper);
+	var rollingGroundVector = rollingGroundSphere.position.clone().normalize();
+	var treeVector = newTree.position.clone().normalize();
+	newTree.quaternion.setFromUnitVectors(treeVector, rollingGroundVector);
+	newTree.rotation.x += Math.random()*((2*Math.PI)/10) + -Math.PI / 10;
+	rollingGroundSphere.add(newTree);
+}
+
