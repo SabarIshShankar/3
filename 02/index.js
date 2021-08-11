@@ -463,4 +463,32 @@ function tightenTree(vertices, sides, currentTier){
 		vertices[i + vertexIndex].sub(offset);
 	}
 }
+function update(){
+	if (!paused){
+		rollingGroundSphere.rotation.x += rollingSpeed;
+		ball.rotation.x -= ballRollingSpeed;
+		if(ball.position.y <= heroBaseY){
+			jumping = false;
+			bounceValue = Math.random() * 0.04 + 0.005;
+		}
+		ball.position.y += bounceValue;
+		ball.position.x = THREE.Math.lerp(
+			ball.position.x,
+			currentLane,
+			4 * clock.getDelta()
+		);
+		bounceValue -= gravity;
+		if(clock.getElapsedTime() > treeReleaseInterval){
+			clock.start();
+			addPathTree();
+			score += 1;
+			scoreText.innerHTML = `Score: ${score.toString()}`;
 
+		}
+		doTreeLogic();
+		doExplosionLogic();
+		render();
+		doDifficultyLogic();
+	}
+	requestAnimationFrame(update);
+}
