@@ -377,3 +377,42 @@ function addTree(inPath, row, isLeft){
 	rollingGroundSphere.add(newTree);
 }
 
+function createTree(){
+	var sides = 8;
+	var tiers = 6;
+	var scalarMultiplier = Math.random() * (0.25 - 0.1) + 0.05;
+	var midPointVector = new THREE.Vector3()
+	var treeGeometry= new THREE.ConeGeometry(0.5, 1, sides, tiers);
+	var tressMaterial = new THREE.MeshStandardMaterial({
+		color: 0x33ff33,
+		shading:THREE.FlatShading,
+	});
+	midPointVector = treeGeometry.vertices[0].clone();
+
+	blowUpTree(treeGeometry.vertices, sides, 0, scalarMultiplier);
+	tightenTree(treeGeometry.vertices, sides, 1);
+	blowUpTree(treeGeometry.vertices, sides, 2, scalarMultiplier * 1.1, true);
+	tightenTree(treeGeometry.vertices, sides, 3);
+	blowUpTree(treeGeometry.vertices, sides, 3);
+	tightenTree(treeGeometry.vertices, sides, 5);
+
+	var treeTop = new THREE.Mesh(treeGeometry, treeMaterial);
+	treeTop.castShadow = true;
+	treeTop.receiveShadow = false;
+	treeTop.position.y = 0.9;
+	treeTop.rotation.y = Math.random() * Math.PI;
+
+	var treeTrunkGeometry= new THREE.CylinderGeometry(0.1, 0.1, 0.5);
+	var trunkMaterial = new THREE.MeshStandardMaterial({
+		color: 0xc28830,
+		shading: THREE.FlatShading,
+	});
+	var treeTrunk = new THREE.Mesh(treeTrunkGeometry, trunkMaterial);
+	treeTrunk.position.y = 0.25;
+
+	var tree = new THREE.Object3D();
+	tree.add(treeTrunk);
+	tree.add(treeTop);
+	return tree;
+}
+
