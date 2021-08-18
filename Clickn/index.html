@@ -7,33 +7,56 @@
 	<body>
 		<div id="space"></div>
 		<div id="cookie" onClick="cookieClick()">
-
-			<button class="btn play-pause">
-		<div class="container">
-			<svg class="icon play">
-				<use xlink:href="#play"></use>
-			</svg>
+			<button class="button br"><div id="numbers"></div></button>
 		</div>
-		<div class="icon-container">
-			<svg class="icon pause">
-				<use xlink:href="#pause"></use>
-			</svg>
-		</div>
-	</button>
-
-			<img src="https://media.giphy.com/media/l0u0eiVkW4x0Y/200.gif" width="200px"/>
-		</div>
-
-		<p>Count</p>
-		<div id="numbers"></div>
 
 	</body>
 </html>
 <style>
-	body, html{
-		margin: auto;
-		position: absolute;
+	#numbers{
+		align-items: center;
+		font-family: Arial;
+		color: #5864bb;
 	}
+body{
+  align-items: center;
+  background: #2e3884;
+  display: flex;
+  font-family: sans-serif;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+button{
+  background: #2e3884;
+  box-shadow:  -10px -10px 31px #151a3d,
+               10px 10px 31px #4756cb;
+  border: 0px;
+  border-radius: 20px;
+  border-image: linear-gradient(to right, rgb(0, 210, 255), rgb(58, 123, 213));
+  border-image-slice: 1;
+  color: white;
+  padding: 50px;
+  margin: auto;
+  text-decoration: none;
+}
+button:hover{
+  background: #2e3884;
+  background: linear-gradient(315deg, #313c8d, #293277);
+  box-shadow:  -10px -10px 31px #151a3d,
+               10px 10px 31px #4756cb;
+  border: 0px;
+  border-radius: 20px;
+  border-image: linear-gradient(to right, rgb(0, 210, 255), rgb(58, 123, 213));
+  border-image-slice: 1;
+  color: white;
+  padding: 50px;
+  margin: auto;
+  text-decoration: none;
+  transform : scale(0.95);
+  transition-duration: 0.3s;
+}
+
 </style>
 <script>
 	console.clear();
