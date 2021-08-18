@@ -151,7 +151,7 @@ function createExplosionParticles(){
 	explodeParticleGeometry = new THREE.Geometry();
 	for (var i = 0; i< particleCOunt; i++){
 		var vertex = new THREE.Vector3();
-		explodeParticleGeomtry.vertices.push(vertex);
+		explodeParticleGeometry.vertices.push(vertex);
 	} 
 	var pMaterial = new THREE.PointsMaterial({
 		color: 0x187018,
@@ -491,4 +491,54 @@ function update(){
 		doDifficultyLogic();
 	}
 	requestAnimationFrame(update);
+}
+
+
+function doTreeLogic{
+	var oneTree;
+	var treePos = new THREE.Vector3();
+	var treesToRemove = [];
+	treeInPath.forEach(function (element, index) {
+		oneTree = treesInPath[index];
+		treePost.setFromMatrixPosition(onTree.matrixWorld);
+		if (treePost.z > 6 && oneTree.visible){
+			treesToRemove.push(oneTree);
+		} else{
+			if(treePost.distanceTo(ball.position) <= 0.6){
+				if(score > highScore){
+					highText.innerHTML = `High ScoreL ${score.toString()}`
+					highScore = score;
+					localStorage.setItem("highScore", highScore)
+					console.log(localStorage)
+				}
+				score = 0;
+				explode();
+			}
+		}
+	});
+	var from Where;
+	treesToRemove.forEach(function (element, index){
+		oneTree = treesToRemove[index];
+		fromWhere = treesInPath.indexOf(oneTree);
+		treesInPath.splice(fromWhere, 1);
+		treesPool.push(oneTree);
+		oneTree.visible = false;
+	});
+}
+
+function doExplosionLogic(){
+	if(!explodeParticles.visible){
+		explodeParticles.material.opacity = 1;
+		return;
+	}
+	for (var i = 0; i< particleCount; i++){
+		explodeParticleGeometry.vertices[i].multiplyScalar(explosionPower);
+	}
+	if (explosionPower > 1.005){
+		explosionPower -= 0.001;
+		explodeParticles.material.opacity -= 0.025;
+	} else {
+		explodeParticles.visible = false;
+	}
+	explodeParticleGeometry.verticesNeedUpdate = true;
 }
