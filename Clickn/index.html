@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<script type="text/javascript" src="script.js"></script>
+		<title>clicker</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div id="space"></div>
+		<div id="cookie" onClick="cookieClick()">
+
+			<button class="btn play-pause">
+		<div class="container">
+			<svg class="icon play">
+				<use xlink:href="#play"></use>
+			</svg>
+		</div>
+		<div class="icon-container">
+			<svg class="icon pause">
+				<use xlink:href="#pause"></use>
+			</svg>
+		</div>
+	</button>
+
+			<img src="https://media.giphy.com/media/l0u0eiVkW4x0Y/200.gif" width="200px"/>
+		</div>
+
+		<p>Count</p>
+		<div id="numbers"></div>
+
+	</body>
+</html>
+<style>
+	body, html{
+		margin: auto;
+		position: absolute;
+	}
+</style>
+<script>
+	console.clear();
+
+const buttons = Array.from(document.querySelectorAll("button"));
+
+buttons.forEach(btn => {
+	btn.addEventListener("click", () => {
+		btn.classList.toggle("active");
+	});
+});
+</script>
