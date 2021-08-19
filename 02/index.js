@@ -542,3 +542,49 @@ function doExplosionLogic(){
 	}
 	explodeParticleGeometry.verticesNeedUpdate = true;
 }
+function explode(){
+	explodeParticles.position.y = 2;
+	explodeParticles.position.z = 4.8;
+	explodeParticles.position.x = ball.position.x;
+	for (var i = 0;i< particleCount; i++){
+		var vertex = new THREE.Vector3();
+		vertex.x = -0.2 + Math.random() * 0.4;
+		vertex.y = -0.2 + Math.random() * 0.4;
+		vertex.z = -0.2 + Math.random()  * 0.4;
+		explodeParticleGeometry.vertices[i] = vertex;
+	}
+	explosionPower = 1.07;
+	explodeParticles.visible = true;
+}
+
+function doDifficultyLogic(){
+	if(score === 0){
+		rollingSpeed = 0.008;
+	} else if(rollingSpeed < 0.0095){
+		rollingSpeed += 0.00001
+	}
+
+	if(score === 0){
+		treeReleaseInterval = 0.5;
+	}else if(treeReleaseInterval > 0.2){
+		treeReleaseInterval -= Math.log(score)/1000;
+	}
+}
+
+function render(){
+	renderer.render(scene, camera);
+}
+
+function onWindowResize(){
+	sceneHeight = window.innerHeight - 20;
+	sceneWidth = window.innerWtdh - 20;
+	titleText.style.left = window.innerWidth / 2 - 190 + "px";
+	
+	if(window.innerWidth < 600){
+		titleText.style.fontSize = 24 + "px";
+		titleText.style.left = window.innerWidth /2 -142.5 + "px";
+	} else{
+		titleText.style.fontSize = 32 +"px";
+		titleText.style.left = window.innerWidth / 2 -190 + "px";
+	}
+}
