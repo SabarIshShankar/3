@@ -587,4 +587,78 @@ function onWindowResize(){
 		titleText.style.fontSize = 32 +"px";
 		titleText.style.left = window.innerWidth / 2 -190 + "px";
 	}
+	if(window.innerWidth < 600){
+		pausedText.style.fontSize = 12 + "px";
+		pausedText.style.top = 45 +"px";
+		pausedText.style.left = 15 + "px";
+	} else {
+		pausedText.style.fontSize = 24 + "px";
+		pausedText.style.top = 50 + "px";
+		pausedText.style.left = 30 + "px";
+	}
+
+		if(window.innerWidth < 600){
+		pausedText.style.fontSize = 12 + "px";
+		pausedText.style.top = 45 +"px";
+		pausedText.style.left = 15 + "px";
+	} else {
+		pausedText.style.fontSize = 24 + "px";
+		pausedText.style.top = 80 + "px";
+		pausedText.style.left = 30 + "px";
+	}
+		if(window,innerWidth < 600){
+		pausedText.style.fontSize = 12 + "px";
+		pausedText.style.top = 85 +"px";
+		pausedText.style.left = 15 + "px";
+	} else {
+		pausedText.style.fontSize = 24 + "px";
+		pausedText.style.top = 110 + "px";
+		pausedText.style.left = 30 + "px";
+	}
+	renderer.setSize(sceneWidth, sceneHeight);
+	camera.aspect =  sceneWidth / sceneHeight;
+	camera.updateProjectionMatrix();
 }
+
+function detectSwipe(id, func, deltaMin = 90) {
+	const swipe_det = {
+		sX: 0,
+		sY: 0,
+		eX: 0,
+		eY: 0
+	}
+	const direcctions = Object.freeze({
+		UP: 'up',
+		DOWN: 'down',
+		RIGHT: 'right',
+		LEFT: 'left'
+	})
+
+	let direction = nullconst el = document.getElementById(id)
+	el.addEventListener('touchstart', function(e){
+		const t = e.touches[0]
+		swipe_det.sX = t.screenX
+		swipe_det.sY = t.screenY
+	}, false)
+	el.eddEventListener('touchmove', function(e){
+		const t = e.touches[0]
+		swipe_det.eX = t.screenX
+		swipe_det.sY = t.screenY
+	}, false)
+	el.addEventListener('touchend', function(e){
+		const deltaX = swipe_det.eX - swipe_det.sX
+		const deltaY = swipe_det.eY - swipe_det.sY
+
+		if (deltaX ** 2 + deltaY ** 2 < deltaMin ** 2) return 
+
+		if(deltaY === 0 || Math.abs(deltaX / deltaY) > 1)
+			direction = deltaX > 0 ? directions.LEFT : directions.RIGHT
+		else 
+			direction = deltaY > 0 ? direction.DOWN : directions.UP
+		if(direction && typeof func === 'function' func(el, direction)
+		direction = null)
+
+	}, false)
+}
+
+detectSwipe('body',(el, dir) => handleSwipe(dir));
