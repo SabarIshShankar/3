@@ -24,3 +24,26 @@ L1.position.z = 100;
 L1.position.y = 100;
 L1.position.x = 100;
 scene.add(L1);
+
+var L2 = new THREE.PointLight(0xffffff, 0.8);
+L2.position.z = 200;
+L2.position.y = 50;
+L2.position.x = -100;
+scene.add(L2);
+
+var Ico = new THREE.Mesh(new THREE.IcosahedronGeometry(75, 1), pinkMat);
+Ico.rotation = 0.5;
+scene.add(Ico);
+
+function update() {
+  Ico.rotation.x += 2 / 100;
+  Ico.rotation.y += 2 / 100;
+}
+
+function render() {
+  requestAnimationFrame(render);
+  renderer.render(scene, camera);
+  update();
+}
+
+render();
